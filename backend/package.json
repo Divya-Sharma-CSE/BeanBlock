@@ -1,0 +1,47 @@
+{
+  "name": "beanblock-backend",
+  "version": "1.0.0",
+  "description": "Backend API for BeanBlock Blockchain Carbon Tracking System",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "vitest",
+    "lint": "eslint src/**/*.ts"
+  },
+  "keywords": ["blockchain", "carbon", "tracking", "web3"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "ethers": "^6.16.0",
+    "axios": "^1.7.2",
+    "dotenv": "^16.4.5",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "express-validator": "^7.1.0",
+    "winston": "^3.13.0",
+    "compression": "^1.7.4",
+    "body-parser": "^1.20.2",
+    "mongoose": "^8.5.0",
+    "jsonwebtoken": "^9.1.2",
+    "bcryptjs": "^2.4.3",
+    "multer": "^1.4.5",
+    "form-data": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.5",
+    "@types/cors": "^2.8.17",
+    "@types/multer": "^1.4.7",
+    "typescript": "^5.8.2",
+    "tsx": "^4.7.0",
+    "vitest": "^1.6.0",
+    "@testing-library/node": "^1.0.0",
+    "eslint": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^6.20.0",
+    "@typescript-eslint/parser": "^6.20.0"
+  }
+}
