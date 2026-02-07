@@ -3,6 +3,7 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+
 contract TradeDocuments is Ownable {
 
     // Fixed document types (judge-friendly)
@@ -24,8 +25,19 @@ contract TradeDocuments is Ownable {
         bool exists;
     }
 
+    struct CarbonData {
+        uint256 totalEmissions; // in grams or kg CO2e
+        string unit;            // "kgCO2e"
+        address reportedBy;
+        uint256 timestamp;
+    }
+
+
     // productId => documents
     mapping(uint256 => ProductDocuments) private productDocs;
+
+    mapping(uint256 => CarbonData) private carbonData;
+
 
     /// EVENTS (IMPORTANT FOR FRONTEND + DEMO)
     event DocumentStored(
@@ -37,57 +49,102 @@ contract TradeDocuments is Ownable {
 
     constructor() Ownable(msg.sender) {}
 
-    // ================= WRITE =================
+// ================= WRITE =================
 
-    function storeDocument(
-        uint256 productId,
-        DocType docType,
-        string calldata cid
-    ) external {
+function storeDocument(
+    uint256 productId,
+    DocType docType,
+    string calldata cid
+) external {
 
-        require(productId > 0, "Invalid product ID");
-        require(bytes(cid).length > 0, "Empty CID");
+    require(productId > 0, "Invalid product ID");
+    require(bytes(cid).length > 0, "Empty CID");
 
-        ProductDocuments storage pd = productDocs[productId];
+    ProductDocuments storage pd = productDocs[productId];
 
-        // Prevent overwrite (immutability)
-        require(
-            bytes(pd.docs[uint8(docType)].cid).length == 0,
-            "Document already exists"
-        );
+    // Prevent overwrite (immutability)
+    require(
+        bytes(pd.docs[uint8(docType)].cid).length == 0,
+        "Document already exists"
+    );
 
-        pd.docs[uint8(docType)] = Document({
-            cid: cid,
-            uploadedBy: msg.sender,
-            timestamp: block.timestamp
-        });
+    pd.docs[uint8(docType)] = Document({
+        cid: cid,
+        uploadedBy: msg.sender,
+        timestamp: block.timestamp
+    });
 
-        pd.exists = true;
+    pd.exists = true;
 
-        emit DocumentStored(productId, docType, cid, msg.sender);
-    }
+    emit DocumentStored(productId, docType, cid, msg.sender);
+}
+
+
+// ================= CARBON WRITE =================
+
+function setCarbonEmission(
+    uint256 productId,
+    uint256 totalEmissions,
+    string calldata unit
+) external {
+
+    require(productDocs[productId].exists, "Product not found");
+    require(totalEmissions > 0, "Invalid emission value");
+
+    carbonData[productId] = CarbonData({
+        totalEmissions: totalEmissions,
+        unit: unit,
+        reportedBy: msg.sender,
+        timestamp: block.timestamp
+    });
+}
+
 
     // ================= READ =================
 
     function getDocument(
-        uint256 productId,
-        DocType docType
+    uint256 productId,
+    DocType docType
+)
+    external
+    view
+    returns (
+        string memory cid,
+        address uploadedBy,
+        uint256 timestamp
     )
-        external
-        view
-        returns (
-            string memory cid,
-            address uploadedBy,
-            uint256 timestamp
-        )
-    {
-        require(productDocs[productId].exists, "Product not found");
+{
+    require(productDocs[productId].exists, "Product not found");
 
-        Document memory d = productDocs[productId].docs[uint8(docType)];
-        require(bytes(d.cid).length > 0, "Document not found");
+    Document memory d = productDocs[productId].docs[uint8(docType)];
+    require(bytes(d.cid).length > 0, "Document not found");
 
-        return (d.cid, d.uploadedBy, d.timestamp);
-    }
+    return (d.cid, d.uploadedBy, d.timestamp);
+}
+
+// ================= READ =================
+
+function getCarbonEmission(uint256 productId)
+    external
+    view
+    returns (
+        uint256 totalEmissions,
+        string memory unit,
+        address reportedBy,
+        uint256 timestamp
+    )
+{
+    CarbonData memory c = carbonData[productId];
+    require(c.timestamp > 0, "Carbon data not set");
+
+    return (
+        c.totalEmissions,
+        c.unit,
+        c.reportedBy,
+        c.timestamp
+    );
+}
+
 
     function isProductComplete(uint256 productId)
         external

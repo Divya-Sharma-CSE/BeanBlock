@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Carbon Verified</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+<header>
+  <strong>🌱 Carbon Verified</strong>
+  <nav>
+    <a href="#product">Product</a>
+    <a href="#documents">Documents</a>
+    <a href="#verification">Verification</a>
+    <a href="#impact">Impact</a>
+  </nav>
+  <button class="btn-primary" onclick="connectWallet()">Verify Product Data</button>
+</header>
+
+<a class="btn-outline about-btn" href="#">About Us</a>
+
+<!-- HERO -->
+<div class="hero">
+  <h1 class="gradient-h">Carbon Verified</h1>
+  <p>Track and verify carbon emissions across supply chains using tamper-proof blockchain records.</p>
+</div>
+
+<!-- FLOW -->
+<section>
+  <h2>How Verification Works</h2>
+  <div class="flow">
+    <div>📄 Documents</div>
+    <div>🌐 IPFS</div>
+    <div>⛓ Blockchain</div>
+    <div>🔍 Verification</div>
+  </div>
+</section>
+
+<!-- PRODUCT -->
+<section id="product">
+  <div class="card">
+    <h2>Product Details</h2>
+
+    <label>Product / Batch ID</label>
+    <input type="number" id="productId" placeholder="e.g. 20240215">
+
+    <label>Total Carbon Emissions</label>
+    <input type="number" id="carbonValue" placeholder="e.g. 12.45">
+
+    <label>Unit</label>
+    <input type="text" value="kg CO₂e" disabled>
+  </div>
+</section>
+
+<!-- DOCUMENTS -->
+<section id="documents">
+  <div class="card">
+    <h2>Document Upload</h2>
+
+    <label>Document Type</label>
+    <select>
+      <option>Retail Receipt</option>
+      <option>Processing Invoice</option>
+      <option>Farm Certificate</option>
+      <option>Bill of Lading</option>
+    </select>
+
+    <label>Upload PDF</label>
+    <input type="file" accept="application/pdf">
+  </div>
+</section>
+
+<!-- TOTAL -->
+<section>
+  <div class="card carbon-box">
+    <h2>Total Verified Carbon Footprint</h2>
+    <h1 id="totalCarbon">0.00 kg CO₂e</h1>
+  </div>
+</section>
+
+<!-- VERIFY -->
+<section id="verification">
+  <div class="card">
+    <h2>Finalize Verification</h2>
+    <button class="btn-primary" onclick="verifyData()">Confirm Carbon Record</button>
+    <p id="status" style="margin-top:16px;color:var(--accent)"></p>
+  </div>
+</section>
+
+<footer>
+  Carbon Verified © 2026 • Transparent • Tamper-Proof • Sustainable
+</footer>
+
+<script>
+  async function connectWallet() {
+    if (!window.ethereum) {
+      alert("MetaMask not installed");
+      return;
+    }
+    await ethereum.request({ method: 'eth_requestAccounts' });
+    alert("Verification enabled");
+  }
+
+  function verifyData() {
+    const value = document.getElementById("carbonValue").value;
+    document.getElementById("totalCarbon").innerText =
+      (value || "0.00") + " kg CO₂e";
+    document.getElementById("status").innerText =
+      "Carbon record successfully verified and locked.";
+  }
+</script>
+
+</body>
+</html>

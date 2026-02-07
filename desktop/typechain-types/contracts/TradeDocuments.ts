@@ -26,10 +26,12 @@ import type {
 export interface TradeDocumentsInterface extends Interface {
   getFunction(
     nameOrSignature:
+      | "getCarbonEmission"
       | "getDocument"
       | "isProductComplete"
       | "owner"
       | "renounceOwnership"
+      | "setCarbonEmission"
       | "storeDocument"
       | "transferOwnership"
   ): FunctionFragment;
@@ -38,6 +40,10 @@ export interface TradeDocumentsInterface extends Interface {
     nameOrSignatureOrTopic: "DocumentStored" | "OwnershipTransferred"
   ): EventFragment;
 
+  encodeFunctionData(
+    functionFragment: "getCarbonEmission",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: "getDocument",
     values: [BigNumberish, BigNumberish]
@@ -52,6 +58,10 @@ export interface TradeDocumentsInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "setCarbonEmission",
+    values: [BigNumberish, BigNumberish, string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "storeDocument",
     values: [BigNumberish, BigNumberish, string]
   ): string;
@@ -60,6 +70,10 @@ export interface TradeDocumentsInterface extends Interface {
     values: [AddressLike]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "getCarbonEmission",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getDocument",
     data: BytesLike
@@ -71,6 +85,10 @@ export interface TradeDocumentsInterface extends Interface {
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setCarbonEmission",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -164,6 +182,19 @@ export interface TradeDocuments extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
+  getCarbonEmission: TypedContractMethod<
+    [productId: BigNumberish],
+    [
+      [bigint, string, string, bigint] & {
+        totalEmissions: bigint;
+        unit: string;
+        reportedBy: string;
+        timestamp: bigint;
+      }
+    ],
+    "view"
+  >;
+
   getDocument: TypedContractMethod<
     [productId: BigNumberish, docType: BigNumberish],
     [
@@ -186,6 +217,12 @@ export interface TradeDocuments extends BaseContract {
 
   renounceOwnership: TypedContractMethod<[], [void], "nonpayable">;
 
+  setCarbonEmission: TypedContractMethod<
+    [productId: BigNumberish, totalEmissions: BigNumberish, unit: string],
+    [void],
+    "nonpayable"
+  >;
+
   storeDocument: TypedContractMethod<
     [productId: BigNumberish, docType: BigNumberish, cid: string],
     [void],
@@ -202,6 +239,20 @@ export interface TradeDocuments extends BaseContract {
     key: string | FunctionFragment
   ): T;
 
+  getFunction(
+    nameOrSignature: "getCarbonEmission"
+  ): TypedContractMethod<
+    [productId: BigNumberish],
+    [
+      [bigint, string, string, bigint] & {
+        totalEmissions: bigint;
+        unit: string;
+        reportedBy: string;
+        timestamp: bigint;
+      }
+    ],
+    "view"
+  >;
   getFunction(
     nameOrSignature: "getDocument"
   ): TypedContractMethod<
@@ -224,6 +275,13 @@ export interface TradeDocuments extends BaseContract {
   getFunction(
     nameOrSignature: "renounceOwnership"
   ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "setCarbonEmission"
+  ): TypedContractMethod<
+    [productId: BigNumberish, totalEmissions: BigNumberish, unit: string],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "storeDocument"
   ): TypedContractMethod<
