@@ -7,188 +7,10 @@
 
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6/dist/ethers.umd.min.js"></script>
 
-  <style>
-    :root {
-      --bg-dark: #050b1c;
-      --bg-dark-2: #020714;
-      --teal: #00e6c3;
-      --teal-soft: #00caa8;
-      --text-light: #cbd5e1;
-      --card-bg: rgba(255,255,255,0.04);
-      --border-soft: rgba(255,255,255,0.08);
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
-
-    body {
-      background: radial-gradient(circle at top, #08122f, var(--bg-dark));
-      color: white;
-      min-height: 100vh;
-    }
-
-    /* subtle grid */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none;
-    }
-
-    /* NAVBAR */
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 24px 60px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 700;
-      color: var(--teal);
-      font-size: 18px;
-    }
-
-    nav {
-      display: flex;
-      gap: 32px;
-      color: var(--text-light);
-      font-size: 14px;
-    }
-
-    nav span {
-      cursor: pointer;
-    }
-
-    .nav-right {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-    }
-
-    .btn-outline {
-      padding: 10px 18px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--teal), var(--teal-soft));
-      color: #00231d;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-    }
-
-    /* HERO */
-    .hero {
-      text-align: center;
-      max-width: 900px;
-      margin: 90px auto 0;
-      padding: 0 20px;
-    }
-
-    .hero h1 {
-      font-size: clamp(48px, 8vw, 96px);
-      font-weight: 800;
-        color: var(--teal);
-      margin-bottom: 24px;
-    }
-
-    .hero h2 {
-      font-size: 26px;
-      font-weight: 500;
-      color: white;
-      margin-bottom: 16px;
-    }
-
-    .hero h2 span {
-      color: var(--teal);
-      font-weight: 600;
-    }
-
-    .hero p {
-      color: var(--text-light);
-      font-size: 16px;
-      max-width: 620px;
-      margin: 0 auto 36px;
-      line-height: 1.6;
-    }
-
-    .btn-primary {
-      padding: 16px 34px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #00ffd5, #00caa8);
-      color: #00231d;
-      font-weight: 600;
-      font-size: 16px;
-      border: none;
-      cursor: pointer;
-    }
-
-    /* STATS */
-    .stats {
-      display: flex;
-      justify-content: center;
-      gap: 28px;
-      margin: 80px auto;
-      flex-wrap: wrap;
-    }
-
-    .stat-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-soft);
-      border-radius: 16px;
-      padding: 26px 40px;
-      text-align: center;
-      min-width: 220px;
-      backdrop-filter: blur(12px);
-    }
-
-    .stat-card h3 {
-      color: var(--teal);
-      font-size: 34px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .stat-card span {
-      color: var(--text-light);
-      font-size: 14px;
-    }
-
-    /* FLOATING ACTION BUTTON */
-    .fab {
-      position: fixed;
-      right: 26px;
-      bottom: 26px;
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #00ffd5, #00caa8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #00231d;
-      font-size: 28px;
-      cursor: pointer;
-      box-shadow: 0 10px 30px rgba(0,255,200,0.3);
-    }
-
-    @media (max-width: 768px) {
-      nav {
-        display: none;
-      }
-    }
-  </style>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
@@ -243,6 +65,342 @@
 
   <!-- FLOATING BUTTON -->
   <div class="fab">+</div>
+
+
+  <section class="verification">
+  <h2>How Verification Works</h2>
+
+  <div class="verification-steps">
+    <div class="verify-card">
+      📄 Documents
+    </div>
+
+    <div class="verify-card">
+      🌐 IPFS
+    </div>
+
+    <div class="verify-card">
+      ⛓ Blockchain
+    </div>
+
+    <div class="verify-card">
+      ✅ Verification
+    </div>
+  </div>
+</section>
+
+
+
+
+<section class="create-batch">
+  <h1>Create New Batch</h1>
+  <p class="subtitle">
+    Create a new coffee batch to start tracking its carbon footprint
+  </p>
+
+  <div class="batch-card">
+    <div class="field">
+      <label>Batch ID</label>
+      <input
+        type="text"
+        placeholder="e.g. COFFEE-2026-001"
+      />
+    </div>
+
+    <div class="field">
+      <label>Origin Location</label>
+      <input
+        type="text"
+        placeholder="e.g. Ethiopia, Yirgacheffe"
+      />
+    </div>
+
+    <button class="create-btn" disabled>
+      <span>＋</span> Create Batch
+    </button>
+
+    <p class="wallet-warning">
+      Please connect your wallet to create a batch
+    </p>
+  </div>
+</section>
+<section class="add-carbon">
+  <div class="icon-badge">🌱</div>
+
+  <h1>Add Carbon Data</h1>
+  <p class="subtitle">Record emissions for each supply chain stage</p>
+
+  <div class="carbon-card">
+    <div class="field">
+      <label>Batch ID</label>
+      <input type="text" placeholder="e.g. COFFEE-2026-001" />
+    </div>
+
+
+    <label>Total Carbon Emissions (kg CO₂e)</label>
+    <input type="number" id="emission" />
+
+    <label>Document Type</label>
+    <select id="docType">
+      <option value="0">Retail Receipt</option>
+      <option value="1">Processing Invoice</option>
+      <option value="2">Farm Certificate</option>
+      <option value="3">Bill of Lading</option>
+    </select>
+
+    <label>Upload PDF</label>
+    <input type="file" id="fileInput" accept="application/pdf" />
+
+  <button class="carbon-btn" disabled>
+      ＋ Add Carbon Entry
+    </button>
+
+    <pre id="status"></pre>
+
+    <script src="js/constants.js"></script>
+    <script src="js/ipfs.js"></script>
+    <script src="js/contract.js"></script>
+    <script src="js/upload.js"></script>
+
+
+    <p class="wallet-warning">
+      Please connect your wallet to add carbon data
+    </p>
+  </div>
+</section>
+<section class="why-carbon">
+  <h2>Why Track Carbon at Each Stage?</h2>
+
+  <div class="why-grid">
+    <div class="why-card">
+      <span class="badge">1</span>
+      <div>
+        <h3>Identify Hotspots</h3>
+        <p>Pinpoint which stages contribute most to emissions</p>
+      </div>
+    </div>
+
+    <div class="why-card">
+      <span class="badge">2</span>
+      <div>
+        <h3>Build Trust</h3>
+        <p>Transparent data verified on blockchain</p>
+      </div>
+    </div>
+
+    <div class="why-card">
+      <span class="badge">3</span>
+      <div>
+        <h3>Optimize Operations</h3>
+        <p>Data-driven decisions to reduce footprint</p>
+      </div>
+    </div>
+
+    <div class="why-card">
+      <span class="badge">4</span>
+      <div>
+        <h3>Consumer Choice</h3>
+        <p>Empower eco-conscious purchasing decisions</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wow-section">
+  <div class="wow-header">
+    <div class="wow-icon">🎖</div>
+    <h2>Complete carbon <span>transparency</span> in one view</h2>
+  </div>
+
+  <div class="wow-card">
+    <p class="wow-label">Total Verified Carbon Footprint</p>
+
+    <div class="wow-value">
+      🌿 <span class="number">7.5</span>
+      <span class="unit">kg CO₂</span>
+    </div>
+
+    <div class="wow-divider"></div>
+
+    <div class="wow-meta">
+      <p>Batch ID: <span class="batch-id">COFFEE-2026-001</span></p>
+      <p class="verified">● Verified on Blockchain</p>
+    </div>
+  </div>
+</section>
+
+
+<section class="carbon-dashboard">
+  <!-- LEFT: Carbon History -->
+  <div class="carbon-history">
+    <h3>🕒 Carbon History</h3>
+
+    <div class="history-card">
+      <div class="row">
+        <strong>Farm</strong>
+        <span class="value green">2.3 kg</span>
+      </div>
+      <small>2026-02-05 09:30</small>
+      <div class="bar">
+        <div class="fill green" style="width: 45%"></div>
+      </div>
+    </div>
+
+    <div class="history-card">
+      <div class="row">
+        <strong>Roast</strong>
+        <span class="value orange">1.7 kg</span>
+      </div>
+      <small>2026-02-06 14:20</small>
+      <div class="bar">
+        <div class="fill orange" style="width: 33%"></div>
+      </div>
+    </div>
+
+    <div class="history-card">
+      <div class="row">
+        <strong>Transport</strong>
+        <span class="value blue">3.1 kg</span>
+      </div>
+      <small>2026-02-06 18:45</small>
+      <div class="bar">
+        <div class="fill blue" style="width: 60%"></div>
+      </div>
+    </div>
+
+    <div class="history-card">
+      <div class="row">
+        <strong>Cup</strong>
+        <span class="value yellow">0.4 kg</span>
+      </div>
+      <small>2026-02-07 08:15</small>
+      <div class="bar">
+        <div class="fill yellow" style="width: 15%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Key Insights -->
+  <div class="key-insights">
+    <h3>📊 Key Insights</h3>
+
+    <div class="insight-card green">
+      <h4>Highest Impact: Transport</h4>
+      <p>Transport accounts for 41% of total emissions. Consider local sourcing or optimized routing.</p>
+    </div>
+
+    <div class="insight-card blue">
+      <h4>Benchmark Comparison</h4>
+      <p>Your footprint is <strong>23% lower</strong> than industry average (9.7 kg CO₂).</p>
+    </div>
+
+    <div class="insight-card orange">
+      <h4>Reduction Potential</h4>
+      <p>Switching to renewable energy in roasting could reduce emissions by <strong>0.8 kg CO₂</strong>.</p>
+    </div>
+
+    <div class="insight-card verified">
+      <div class="badge">🎖</div>
+      <h4>Verified Low Carbon</h4>
+      <p>Blockchain Certificate #42069</p>
+    </div>
+  </div>
+</section>
+
+
+<section class="qr-section">
+  <div class="qr-header">
+    <div class="qr-icon">🔳</div>
+    <h2>QR Code Access</h2>
+    <p>Scan to instantly view carbon footprint data</p>
+  </div>
+
+  <div class="qr-cards">
+    <!-- Generate -->
+    <div class="qr-card">
+      <h3>Generate QR Code</h3>
+      <input type="text" placeholder="Enter Batch ID" />
+      <button class="btn blue">📷 Generate QR Code</button>
+    </div>
+
+    <!-- Lookup -->
+    <div class="qr-card">
+      <h3>Product Lookup</h3>
+      <input type="text" placeholder="Enter Batch ID to lookup" />
+      <button class="btn purple">🔍 Search Batch</button>
+    </div>
+  </div>
+
+  <div class="qr-uses">
+    <div class="use-card">
+      📦
+      <h4>On Product Packaging</h4>
+      <p>Print QR code directly on coffee bags</p>
+    </div>
+
+    <div class="use-card">
+      🏪
+      <h4>In Retail Stores</h4>
+      <p>Display codes at point of sale</p>
+    </div>
+
+    <div class="use-card">
+      📱
+      <h4>Marketing Materials</h4>
+      <p>Share on social media and ads</p>
+    </div>
+  </div>
+</section>
+
+
+<footer class="site-footer">
+  <div class="footer-top">
+    <!-- Brand -->
+    <div class="footer-brand">
+      <h3>Carbon Verified</h3>
+      <p>
+        Bringing transparency to supply chains through blockchain technology.
+        Every product, every emission, fully verified.
+      </p>
+
+      <div class="social-icons">
+        <a href="#" aria-label="GitHub">🐙</a>
+        <a href="#" aria-label="Twitter">🐦</a>
+        <a href="#" aria-label="LinkedIn">💼</a>
+        <a href="#" aria-label="Website">🌐</a>
+      </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <a href="#">About</a>
+      <a href="#">How It Works</a>
+      <a href="#">Documentation</a>
+      <a href="#">Blog</a>
+    </div>
+
+    <!-- Resources -->
+    <div class="footer-links">
+      <h4>Resources</h4>
+      <a href="#">Smart Contract</a>
+      <a href="#">API Docs</a>
+      <a href="#">Support</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+
+  <div class="footer-divider"></div>
+
+  <div class="footer-bottom">
+    <span>© 2026 Carbon Verified. Built for sustainability.</span>
+    <div class="legal-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+    </div>
+  </div>
+</footer>
+
 
 
 
