@@ -1,21 +1,21 @@
-const hre = require("hardhat");
+import pkg from "hardhat";
+const { ethers } = pkg;
+
+import * as fs from "fs";
 
 async function main() {
-  const [deployer] = await hre.ethers.getSigners();
-  console.log("Deploying contracts with account:", deployer.address);
+  const TradeDocuments = await ethers.getContractFactory("TradeDocuments");
 
-  // Deploy TradeDocuments
-  const TradeDocuments = await hre.ethers.getContractFactory("TradeDocuments");
-  const tradeDoc = await TradeDocuments.deploy();
-  await tradeDoc.waitForDeployment();
-  console.log("TradeDocuments deployed to:", tradeDoc.target);
+  const tradeDocs = await TradeDocuments.deploy();
+  await tradeDocs.waitForDeployment();
 
-  // Deploy MyToken
-  const MyToken = await hre.ethers.getContractFactory("MyToken");
-  const initialSupply = hre.ethers.parseUnits("1000", 18);
-  const token = await MyToken.deploy(initialSupply);
-  await token.waitForDeployment();
-  console.log("MyToken deployed to:", token.target);
+  const address = await tradeDocs.getAddress();
+  console.log("TradeDocuments deployed to:", address);
+
+  fs.writeFileSync(
+    "./deployed-address.json",
+    JSON.stringify({ TradeDocuments: address }, null, 2)
+  );
 }
 
 main().catch((error) => {

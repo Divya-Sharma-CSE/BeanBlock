@@ -4,3 +4,4 @@
 import type * as mytokenSol from "./Mytoken.sol";
 export type { mytokenSol };
 export type { BeanBlockTracker } from "./BeanBlockTracker";
+export type { TradeDocuments } from "./TradeDocuments";

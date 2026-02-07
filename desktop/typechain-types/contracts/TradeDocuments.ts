@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type {
   BaseContract,
+  BigNumberish,
   BytesLike,
   FunctionFragment,
   Result,
@@ -20,24 +21,30 @@ import type {
   TypedLogDescription,
   TypedListener,
   TypedContractMethod,
-} from "../../common";
+} from "../common";
 
 export interface TradeDocumentsInterface extends Interface {
   getFunction(
     nameOrSignature:
-      | "getDocumentOwner"
+      | "getDocument"
+      | "isProductComplete"
       | "owner"
       | "renounceOwnership"
-      | "storeDocumentHash"
+      | "storeDocument"
       | "transferOwnership"
-      | "verifyDocument"
   ): FunctionFragment;
 
-  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
+  getEvent(
+    nameOrSignatureOrTopic: "DocumentStored" | "OwnershipTransferred"
+  ): EventFragment;
 
   encodeFunctionData(
-    functionFragment: "getDocumentOwner",
-    values: [BytesLike]
+    functionFragment: "getDocument",
+    values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isProductComplete",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
@@ -45,20 +52,20 @@ export interface TradeDocumentsInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "storeDocumentHash",
-    values: [BytesLike]
+    functionFragment: "storeDocument",
+    values: [BigNumberish, BigNumberish, string]
   ): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [AddressLike]
   ): string;
-  encodeFunctionData(
-    functionFragment: "verifyDocument",
-    values: [BytesLike]
-  ): string;
 
   decodeFunctionResult(
-    functionFragment: "getDocumentOwner",
+    functionFragment: "getDocument",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "isProductComplete",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
@@ -67,17 +74,38 @@ export interface TradeDocumentsInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "storeDocumentHash",
+    functionFragment: "storeDocument",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "verifyDocument",
-    data: BytesLike
-  ): Result;
+}
+
+export namespace DocumentStoredEvent {
+  export type InputTuple = [
+    productId: BigNumberish,
+    docType: BigNumberish,
+    cid: string,
+    uploadedBy: AddressLike
+  ];
+  export type OutputTuple = [
+    productId: bigint,
+    docType: bigint,
+    cid: string,
+    uploadedBy: string
+  ];
+  export interface OutputObject {
+    productId: bigint;
+    docType: bigint;
+    cid: string;
+    uploadedBy: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
 }
 
 export namespace OwnershipTransferredEvent {
@@ -136,14 +164,30 @@ export interface TradeDocuments extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  getDocumentOwner: TypedContractMethod<[hash: BytesLike], [string], "view">;
+  getDocument: TypedContractMethod<
+    [productId: BigNumberish, docType: BigNumberish],
+    [
+      [string, string, bigint] & {
+        cid: string;
+        uploadedBy: string;
+        timestamp: bigint;
+      }
+    ],
+    "view"
+  >;
+
+  isProductComplete: TypedContractMethod<
+    [productId: BigNumberish],
+    [boolean],
+    "view"
+  >;
 
   owner: TypedContractMethod<[], [string], "view">;
 
   renounceOwnership: TypedContractMethod<[], [void], "nonpayable">;
 
-  storeDocumentHash: TypedContractMethod<
-    [hash: BytesLike],
+  storeDocument: TypedContractMethod<
+    [productId: BigNumberish, docType: BigNumberish, cid: string],
     [void],
     "nonpayable"
   >;
@@ -154,15 +198,26 @@ export interface TradeDocuments extends BaseContract {
     "nonpayable"
   >;
 
-  verifyDocument: TypedContractMethod<[hash: BytesLike], [boolean], "view">;
-
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
 
   getFunction(
-    nameOrSignature: "getDocumentOwner"
-  ): TypedContractMethod<[hash: BytesLike], [string], "view">;
+    nameOrSignature: "getDocument"
+  ): TypedContractMethod<
+    [productId: BigNumberish, docType: BigNumberish],
+    [
+      [string, string, bigint] & {
+        cid: string;
+        uploadedBy: string;
+        timestamp: bigint;
+      }
+    ],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "isProductComplete"
+  ): TypedContractMethod<[productId: BigNumberish], [boolean], "view">;
   getFunction(
     nameOrSignature: "owner"
   ): TypedContractMethod<[], [string], "view">;
@@ -170,15 +225,23 @@ export interface TradeDocuments extends BaseContract {
     nameOrSignature: "renounceOwnership"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
-    nameOrSignature: "storeDocumentHash"
-  ): TypedContractMethod<[hash: BytesLike], [void], "nonpayable">;
+    nameOrSignature: "storeDocument"
+  ): TypedContractMethod<
+    [productId: BigNumberish, docType: BigNumberish, cid: string],
+    [void],
+    "nonpayable"
+  >;
   getFunction(
     nameOrSignature: "transferOwnership"
   ): TypedContractMethod<[newOwner: AddressLike], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "verifyDocument"
-  ): TypedContractMethod<[hash: BytesLike], [boolean], "view">;
 
+  getEvent(
+    key: "DocumentStored"
+  ): TypedContractEvent<
+    DocumentStoredEvent.InputTuple,
+    DocumentStoredEvent.OutputTuple,
+    DocumentStoredEvent.OutputObject
+  >;
   getEvent(
     key: "OwnershipTransferred"
   ): TypedContractEvent<
@@ -188,6 +251,17 @@ export interface TradeDocuments extends BaseContract {
   >;
 
   filters: {
+    "DocumentStored(uint256,uint8,string,address)": TypedContractEvent<
+      DocumentStoredEvent.InputTuple,
+      DocumentStoredEvent.OutputTuple,
+      DocumentStoredEvent.OutputObject
+    >;
+    DocumentStored: TypedContractEvent<
+      DocumentStoredEvent.InputTuple,
+      DocumentStoredEvent.OutputTuple,
+      DocumentStoredEvent.OutputObject
+    >;
+
     "OwnershipTransferred(address,address)": TypedContractEvent<
       OwnershipTransferredEvent.InputTuple,
       OwnershipTransferredEvent.OutputTuple,

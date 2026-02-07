@@ -3,3 +3,4 @@
 /* eslint-disable */
 export * as mytokenSol from "./Mytoken.sol";
 export { BeanBlockTracker__factory } from "./BeanBlockTracker__factory";
+export { TradeDocuments__factory } from "./TradeDocuments__factory";

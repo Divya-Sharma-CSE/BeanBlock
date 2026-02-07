@@ -24,5 +24,5 @@ export type { BeanBlockTracker } from "./contracts/BeanBlockTracker";
 export { BeanBlockTracker__factory } from "./factories/contracts/BeanBlockTracker__factory";
 export type { MyToken } from "./contracts/Mytoken.sol/MyToken";
 export { MyToken__factory } from "./factories/contracts/Mytoken.sol/MyToken__factory";
-export type { TradeDocuments } from "./contracts/Mytoken.sol/TradeDocuments";
-export { TradeDocuments__factory } from "./factories/contracts/Mytoken.sol/TradeDocuments__factory";
+export type { TradeDocuments } from "./contracts/TradeDocuments";
+export { TradeDocuments__factory } from "./factories/contracts/TradeDocuments__factory";

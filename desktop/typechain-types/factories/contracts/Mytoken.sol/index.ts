@@ -2,4 +2,3 @@
 /* tslint:disable */
 /* eslint-disable */
 export { MyToken__factory } from "./MyToken__factory";
-export { TradeDocuments__factory } from "./TradeDocuments__factory";
