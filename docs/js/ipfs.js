@@ -1,4 +1,4 @@
-export async function uploadToIPFS(file) {
+async function uploadToIPFS(file) {
   if (!file) {
     throw new Error("File is required for IPFS upload");
   }

@@ -1,3 +1,4 @@
+document.addEventListener("DOMContentLoaded", () => {
 document.getElementById("uploadBtn").onclick = async () => {
   const productId = Number(document.getElementById("productId").value);
   const emission = Number(document.getElementById("emission").value);
@@ -25,3 +26,4 @@ document.getElementById("uploadBtn").onclick = async () => {
     status.textContent = "❌ Error: " + err.message;
   }
 };
+});
