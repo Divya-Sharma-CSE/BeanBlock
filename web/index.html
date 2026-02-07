@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Carbon Verified</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #050b1c;
+      --bg-dark-2: #020714;
+      --teal: #00e6c3;
+      --teal-soft: #00caa8;
+      --text-light: #cbd5e1;
+      --card-bg: rgba(255,255,255,0.04);
+      --border-soft: rgba(255,255,255,0.08);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #08122f, var(--bg-dark));
+      color: white;
+      min-height: 100vh;
+    }
+
+    /* subtle grid */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    /* NAVBAR */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 60px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      color: var(--teal);
+      font-size: 18px;
+    }
+
+    nav {
+      display: flex;
+      gap: 32px;
+      color: var(--text-light);
+      font-size: 14px;
+    }
+
+    nav span {
+      cursor: pointer;
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .btn-outline {
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--teal), var(--teal-soft));
+      color: #00231d;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      max-width: 900px;
+      margin: 90px auto 0;
+      padding: 0 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(48px, 8vw, 96px);
+      font-weight: 800;
+        color: var(--teal);
+      margin-bottom: 24px;
+    }
+
+    .hero h2 {
+      font-size: 26px;
+      font-weight: 500;
+      color: white;
+      margin-bottom: 16px;
+    }
+
+    .hero h2 span {
+      color: var(--teal);
+      font-weight: 600;
+    }
+
+    .hero p {
+      color: var(--text-light);
+      font-size: 16px;
+      max-width: 620px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+    }
+
+    .btn-primary {
+      padding: 16px 34px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #00ffd5, #00caa8);
+      color: #00231d;
+      font-weight: 600;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* STATS */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      margin: 80px auto;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-soft);
+      border-radius: 16px;
+      padding: 26px 40px;
+      text-align: center;
+      min-width: 220px;
+      backdrop-filter: blur(12px);
+    }
+
+    .stat-card h3 {
+      color: var(--teal);
+      font-size: 34px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .stat-card span {
+      color: var(--text-light);
+      font-size: 14px;
+    }
+
+    /* FLOATING ACTION BUTTON */
+    .fab {
+      position: fixed;
+      right: 26px;
+      bottom: 26px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00ffd5, #00caa8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #00231d;
+      font-size: 28px;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0,255,200,0.3);
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <header>
+    <div class="logo">🌱 Carbon Verified</div>
+
+    <nav>
+      <span>Timeline</span>
+      <span>Create</span>
+      <span>Track</span>
+      <span>QR Code</span>
+    </nav>
+
+    <div class="nav-right">
+      <button class="btn-outline">Get Started</button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Carbon Verified</h1>
+
+    <h2>A <span>transparent</span> carbon journey of coffee</h2>
+
+    <p>
+      Blockchain-powered transparency for verifiable carbon footprints.
+      Every product tells its sustainability story.
+    </p>
+
+    <button class="btn-primary" id="connectWalletBtn">Verify Product Data</button>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats">
+    <div class="stat-card">
+      <h3>1,247</h3>
+      <span>Batches Tracked</span>
+    </div>
+
+    <div class="stat-card">
+      <h3>3.4T</h3>
+      <span>CO₂ Verified</span>
+    </div>
+
+    <div class="stat-card">
+      <h3>3</h3>
+      <span>Supply Stages</span>
+    </div>
+  </section>
+
+  <!-- FLOATING BUTTON -->
+  <div class="fab">+</div>
+
+
+
+  <script>
+    document.getElementById("connectWalletBtn").onclick = async () => {
+        if (!window.ethereum) {
+        alert("Extension not installed");
+        return;
+        }
+
+        const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts"
+        });
+
+        console.log("Connected:", accounts[0]);
+    };
+    </script>
+
+
+</body>
+</html>
+i
