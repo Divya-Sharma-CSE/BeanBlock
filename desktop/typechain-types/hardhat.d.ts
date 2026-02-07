@@ -14,6 +14,10 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
+      name: "Ownable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Ownable__factory>;
+    getContractFactory(
       name: "IERC1155Errors",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC1155Errors__factory>;
@@ -45,7 +49,16 @@ declare module "hardhat/types/runtime" {
       name: "MyToken",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MyToken__factory>;
+    getContractFactory(
+      name: "TradeDocuments",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.TradeDocuments__factory>;
 
+    getContractAt(
+      name: "Ownable",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Ownable>;
     getContractAt(
       name: "IERC1155Errors",
       address: string | ethers.Addressable,
@@ -86,7 +99,16 @@ declare module "hardhat/types/runtime" {
       address: string | ethers.Addressable,
       signer?: ethers.Signer
     ): Promise<Contracts.MyToken>;
+    getContractAt(
+      name: "TradeDocuments",
+      address: string | ethers.Addressable,
+      signer?: ethers.Signer
+    ): Promise<Contracts.TradeDocuments>;
 
+    deployContract(
+      name: "Ownable",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.Ownable>;
     deployContract(
       name: "IERC1155Errors",
       signerOrOptions?: ethers.Signer | DeployContractOptions
@@ -119,7 +141,16 @@ declare module "hardhat/types/runtime" {
       name: "MyToken",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.MyToken>;
+    deployContract(
+      name: "TradeDocuments",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.TradeDocuments>;
 
+    deployContract(
+      name: "Ownable",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.Ownable>;
     deployContract(
       name: "IERC1155Errors",
       args: any[],
@@ -160,6 +191,11 @@ declare module "hardhat/types/runtime" {
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.MyToken>;
+    deployContract(
+      name: "TradeDocuments",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.TradeDocuments>;
 
     // default types
     getContractFactory(

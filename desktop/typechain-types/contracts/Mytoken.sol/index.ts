@@ -2,3 +2,4 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { MyToken } from "./MyToken";
+export type { TradeDocuments } from "./TradeDocuments";
