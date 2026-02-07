@@ -7,13 +7,22 @@ async function uploadToIPFS(file) {
     const formData = new FormData();
     formData.append("file", file);
 
+    // Get JWT from window variable set in HTML or fallback to empty string
+    const jwtToken = window.PINATA_JWT || "";
+    
+    const headers = {
+      method: "POST",
+    };
+    
+    // Only add Authorization header if JWT is available
+    if (jwtToken) {
+      headers.Authorization = `Bearer ${jwtToken}`;
+    }
+
     const response = await fetch(
       "https://api.pinata.cloud/pinning/pinFileToIPFS",
       {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.PINATA_JWT}`,
-        },
+        ...headers,
         body: formData,
       }
     );

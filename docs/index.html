@@ -151,11 +151,17 @@
     <label>Upload PDF</label>
     <input type="file" id="fileInput" accept="application/pdf" />
 
-  <button class="carbon-btn" disabled>
+  <button class="carbon-btn" id="uploadBtn" disabled>
       ＋ Add Carbon Entry
     </button>
 
     <pre id="status"></pre>
+
+    <!-- Configure Pinata JWT -->
+    <script>
+      // Set your Pinata JWT token here, or load from server
+      window.PINATA_JWT = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIyYmU3MTQwNi1lMzkxLTQzNzMtYjkwYy05YzZlMmExNTJmMGUiLCJlbWFpbCI6ImRpdnlhc2gwMjQyQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6IkZSQTEifSx7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6Ik5ZQzEifV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI0OTczYzhjMzM0MjUyZWE2OWE0YiIsInNjb3BlZEtleVNlY3JldCI6IjUwNjE1YzJhOTljMzVjMGY4M2RkZmJkZmNjYzBlN2Y2ZmQ2ZGZhNzUzOWMwYjVmODAxM2Y5ZjQxMTJhYjRjN2IiLCJleHAiOjE4MDIwNDAxMDd9.Rv0aB7wxNprq1pOsCiKHzwW1EhEJTTy4Q6NJAFPUtPY";
+    </script>
 
     <script src="js/constants.js"></script>
     <script src="js/ipfs.js"></script>
