@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌱 BeanBlock - System Diagnostics</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+    
+    .header h1 {
+      font-size: 28px;
+      margin-bottom: 5px;
+    }
+    
+    .header p {
+      opacity: 0.9;
+      font-size: 14px;
+    }
+    
+    .content {
+      padding: 30px;
+    }
+    
+    .test-group {
+      margin-bottom: 25px;
+    }
+    
+    .test-group-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #667eea;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .test-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      background: #f8f9fa;
+      border-left: 4px solid #ddd;
+      transition: all 0.3s ease;
+    }
+    
+    .test-item.pass {
+      background: #f0f8f4;
+      border-left-color: #4CAF50;
+    }
+    
+    .test-item.fail {
+      background: #fef5f5;
+      border-left-color: #f44336;
+    }
+    
+    .test-item.loading {
+      background: #fef8f0;
+      border-left-color: #ff9800;
+    }
+    
+    .test-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      min-width: 20px;
+    }
+    
+    .test-content {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .test-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 4px;
+    }
+    
+    .test-message {
+      font-size: 12px;
+      color: #666;
+      font-family: 'Monaco', 'Courier New', monospace;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+    
+    .test-item.fail .test-message {
+      color: #c62828;
+    }
+    
+    .test-item.pass .test-message {
+      color: #2e7d32;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: #e0e0e0;
+      border-radius: 2px;
+      margin-top: 20px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    
+    .summary {
+      margin-top: 25px;
+      padding: 15px;
+      border-radius: 6px;
+      text-align: center;
+      font-weight: 500;
+      display: none;
+    }
+    
+    .summary.success {
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #4CAF50;
+      display: block;
+    }
+    
+    .summary.error {
+      background: #ffebee;
+      color: #c62828;
+      border: 1px solid #f44336;
+      display: block;
+    }
+    
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 25px;
+      justify-content: center;
+    }
+    
+    button {
+      padding: 10px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-secondary {
+      background: #f5f5f5;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+    
+    .btn-secondary:hover {
+      background: #efefef;
+    }
+    
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+    }
+    
+    .stat {
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: 24px;
+      font-weight: bold;
+      color: #667eea;
+    }
+    
+    .stat-label {
+      font-size: 12px;
+      color: #999;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🌱 BeanBlock Diagnostics</h1>
+      <p>Verifying system configuration...</p>
+    </div>
+    
+    <div class="content">
+      <div class="test-group" id="testGroup"></div>
+      
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-number" id="passCount">0</div>
+          <div class="stat-label">Passed</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" id="failCount">0</div>
+          <div class="stat-label">Failed</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" id="totalCount">0</div>
+          <div class="stat-label">Tests</div>
+        </div>
+      </div>
+      
+      <div class="summary" id="summary"></div>
+      
+      <div class="actions">
+        <button class="btn-secondary" onclick="location.href='index.html'">← Back to App</button>
+        <button class="btn-primary" onclick="location.reload()">🔄 Refresh</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.10.0/dist/ethers.umd.min.js"></script>
+  <script>
+    const tests = [];
+    let passed = 0;
+    let failed = 0;
+
+    function addTest(name, category, fn) {
+      tests.push({ name, category, fn });
+    }
+
+    function getCurrentGroup() {
+      const lastTest = tests[tests.length - 1];
+      const group = document.querySelector(`[data-group="${lastTest.category}"]`);
+      return group;
+    }
+
+    function renderTest(test, result) {
+      const { name, category } = test;
+      let status = 'loading';
+      let icon = '⏳';
+      let message = '';
+
+      if (result === true) {
+        status = 'pass';
+        icon = '✅';
+        passed++;
+      } else if (result === false || typeof result === 'string') {
+        status = 'fail';
+        icon = '❌';
+        failed++;
+        message = typeof result === 'string' ? result : 'Test failed';
+      }
+
+      return `
+        <div class="test-item ${status}">
+          <div class="test-icon">${icon}</div>
+          <div class="test-content">
+            <div class="test-name">${name}</div>
+            ${message ? `<div class="test-message">${escapeHtml(message)}</div>` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function updateUI() {
+      const container = document.getElementById('testGroup');
+      let html = '';
+      let currentGroup = '';
+
+      tests.forEach((test, index) => {
+        if (test.category !== currentGroup) {
+          currentGroup = test.category;
+          const groupIcon = {
+            'Core Libraries': '📚',
+            'Browser APIs': '🌐',
+            'Contract Configuration': '📝',
+            'File Access': '📁',
+            'Page Structure': '🏗️'
+          }[currentGroup] || '📋';
+          
+          html += `<div class="test-group" data-group="${currentGroup}">
+            <div class="test-group-title">${groupIcon} ${currentGroup}</div>
+            <div id="group-${currentGroup}"></div>
+          </div>`;
+        }
+      });
+
+      container.innerHTML = html;
+
+      tests.forEach((test, index) => {
+        const groupContainer = document.getElementById(`group-${test.category}`);
+        if (groupContainer) {
+          const testElement = document.createElement('div');
+          testElement.id = `test-${index}`;
+          groupContainer.appendChild(testElement);
+        }
+      });
+
+      updateStats();
+      updateProgress();
+      updateSummary();
+    }
+
+    function updateStats() {
+      document.getElementById('passCount').textContent = passed;
+      document.getElementById('failCount').textContent = failed;
+      document.getElementById('totalCount').textContent = tests.length;
+    }
+
+    function updateProgress() {
+      const total = tests.length;
+      const completed = passed + failed;
+      const percentage = total > 0 ? (completed / total) * 100 : 0;
+      document.getElementById('progressFill').style.width = percentage + '%';
+    }
+
+    function updateSummary() {
+      const summary = document.getElementById('summary');
+      const total = tests.length;
+      const completed = passed + failed;
+
+      if (completed === total && total > 0) {
+        if (failed === 0) {
+          summary.className = 'summary success';
+          summary.innerHTML = '✅ All systems ready! You can now use the application.';
+        } else {
+          summary.className = 'summary error';
+          summary.innerHTML = `⚠️ ${failed} issue(s) detected. Please review the errors above.`;
+        }
+      }
+    }
+
+    async function runTest(index) {
+      const test = tests[index];
+      const testElement = document.getElementById(`test-${index}`);
+
+      try {
+        let result = test.fn();
+        if (result instanceof Promise) {
+          result = await result;
+        }
+        if (result === true) {
+          testElement.innerHTML = renderTest(test, true);
+        } else if (result === false) {
+          testElement.innerHTML = renderTest(test, 'Test failed');
+        } else {
+          testElement.innerHTML = renderTest(test, result);
+        }
+      } catch (error) {
+        testElement.innerHTML = renderTest(test, error.message);
+      }
+
+      updateStats();
+      updateProgress();
+      updateSummary();
+    }
+
+    // Define Tests
+    addTest('Ethers.js Library Loaded', 'Core Libraries', () => {
+      if (typeof ethers === 'undefined') {
+        return 'Failed to load from CDN: https://cdn.jsdelivr.net/npm/ethers@6.10.0/';
+      }
+      return true;
+    });
+
+    addTest('ethers.BrowserProvider Available', 'Core Libraries', () => {
+      return typeof ethers?.BrowserProvider !== 'undefined' || 'BrowserProvider not available';
+    });
+
+    addTest('ethers.Contract Available', 'Core Libraries', () => {
+      return typeof ethers?.Contract !== 'undefined' || 'Contract class not available';
+    });
+
+    addTest('ethers.AbiCoder Available', 'Core Libraries', () => {
+      return typeof ethers?.AbiCoder !== 'undefined' || 'AbiCoder not available';
+    });
+
+    addTest('MetaMask Extension Installed', 'Browser APIs', () => {
+      if (typeof window.ethereum === 'undefined') {
+        return 'MetaMask not installed. Download from https://metamask.io';
+      }
+      return true;
+    });
+
+    addTest('Ethereum Provider Available', 'Browser APIs', () => {
+      return typeof window.ethereum?.request === 'function' || 'Provider has no request method';
+    });
+
+    addTest('Contract ABI File Accessible', 'Contract Configuration', () => {
+      return new Promise((resolve) => {
+        fetch('../abi/TradeDocuments.json')
+          .then(r => {
+            if (!r.ok) {
+              resolve(`HTTP ${r.status}: Check that /docs/abi/TradeDocuments.json exists`);
+            } else {
+              return r.json().then(data => {
+                if (!data.abi || !Array.isArray(data.abi)) {
+                  resolve('ABI structure is invalid');
+                } else {
+                  resolve(true);
+                }
+              });
+            }
+          })
+          .catch(err => {
+            resolve(`CORS or network error: ${err.message}`);
+          });
+      });
+    });
+
+    addTest('Contract Address Configured', 'Contract Configuration', () => {
+      // This will be true if the constants file loads properly
+      return fetch('../js/constants.js')
+        .then(r => {
+          if (!r.ok) {
+            return false;
+          }
+          return r.text().then(text => {
+            return text.includes('CONTRACT_ADDRESS') || 'CONTRACT_ADDRESS not defined in constants.js';
+          });
+        })
+        .catch(err => `Cannot load constants: ${err.message}`);
+    });
+
+    addTest('IPFS Module Accessible', 'File Access', () => {
+      return fetch('../js/ipfs.js')
+        .then(r => r.ok || `HTTP ${r.status}`)
+        .catch(err => `Cannot reach: ${err.message}`);
+    });
+
+    addTest('Contract Module Accessible', 'File Access', () => {
+      return fetch('../js/contract.js')
+        .then(r => r.ok || `HTTP ${r.status}`)
+        .catch(err => `Cannot reach: ${err.message}`);
+    });
+
+    addTest('DOM Ready', 'Page Structure', () => {
+      const ready = document.readyState === 'complete' || document.readyState === 'interactive';
+      return ready || 'DOM not fully loaded';
+    });
+
+    addTest('Main Application Accessible', 'Page Structure', () => {
+      return fetch('index.html')
+        .then(r => r.ok || `HTTP ${r.status}`)
+        .catch(err => `Cannot reach: ${err.message}`);
+    });
+
+    // Render UI and run tests
+    updateUI();
+    
+    async function runAllTests() {
+      for (let i = 0; i < tests.length; i++) {
+        await runTest(i);
+        // Add small delay between tests for visual feedback
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+    }
+
+    runAllTests();
+  </script>
+</body>
+</html>

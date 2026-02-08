@@ -7,7 +7,16 @@
 
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/ethers@6/dist/ethers.umd.min.js"></script>
+  
+  <!-- Ethers.js Library with proper error handling -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.10.0/dist/ethers.umd.min.js"></script>
+  <script>
+    // Wait for ethers to load
+    if (typeof ethers === 'undefined') {
+      console.warn('Ethers library failed to load from CDN, attempting fallback...');
+      document.write('<script src="https://unpkg.com/ethers@6.10.0/dist/ethers.umd.min.js"><\/script>');
+    }
+  </script>
 
   <!-- Stylesheet -->
   <link rel="stylesheet" href="style.css" />
@@ -163,10 +172,37 @@
       window.PINATA_JWT = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiIyYmU3MTQwNi1lMzkxLTQzNzMtYjkwYy05YzZlMmExNTJmMGUiLCJlbWFpbCI6ImRpdnlhc2gwMjQyQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6IkZSQTEifSx7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6Ik5ZQzEifV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiI0OTczYzhjMzM0MjUyZWE2OWE0YiIsInNjb3BlZEtleVNlY3JldCI6IjUwNjE1YzJhOTljMzVjMGY4M2RkZmJkZmNjYzBlN2Y2ZmQ2ZGZhNzUzOWMwYjVmODAxM2Y5ZjQxMTJhYjRjN2IiLCJleHAiOjE4MDIwNDAxMDd9.Rv0aB7wxNprq1pOsCiKHzwW1EhEJTTy4Q6NJAFPUtPY";
     </script>
 
-    <script src="js/constants.js"></script>
-    <script src="js/ipfs.js"></script>
-    <script src="js/contract.js"></script>
-    <script src="js/upload.js"></script>
+    <!-- Load scripts in correct order with ethers availability check -->
+    <script>
+      function loadScriptsWhenReady() {
+        if (typeof ethers === 'undefined') {
+          console.log('Waiting for ethers library to load...');
+          setTimeout(loadScriptsWhenReady, 100);
+          return;
+        }
+        console.log('Ethers library loaded successfully');
+        
+        // Load helper modules
+        loadScript('js/constants.js');
+        loadScript('js/ipfs.js');
+        loadScript('js/contract.js');
+        loadScript('js/upload.js');
+      }
+      
+      function loadScript(src) {
+        const script = document.createElement('script');
+        script.src = src;
+        script.onerror = () => console.error(`Failed to load ${src}`);
+        document.body.appendChild(script);
+      }
+      
+      // Start loading when DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadScriptsWhenReady);
+      } else {
+        loadScriptsWhenReady();
+      }
+    </script>
 
 
     <p class="wallet-warning">
@@ -411,19 +447,50 @@
 
 
   <script>
-    document.getElementById("connectWalletBtn").onclick = async () => {
-        if (!window.ethereum) {
-        alert("Extension not installed");
+    // Wait for ethers to load, then set up event listeners
+    function setupEventListeners() {
+      if (typeof ethers === 'undefined') {
+        console.log('Ethers not ready yet, retrying...');
+        setTimeout(setupEventListeners, 100);
         return;
+      }
+      
+      const connectBtn = document.getElementById("connectWalletBtn");
+      if (!connectBtn) {
+        console.warn('Connect wallet button not found');
+        return;
+      }
+      
+      connectBtn.onclick = async () => {
+        if (!window.ethereum) {
+          alert("MetaMask extension not installed. Please install MetaMask to use this feature.");
+          return;
         }
 
-        const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts"
-        });
+        try {
+          const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts"
+          });
+          console.log("Connected wallet:", accounts[0]);
+          alert(`Connected: ${accounts[0]}`);
+          
+          // Enable create/upload buttons
+          document.querySelectorAll('.create-btn, .carbon-btn').forEach(btn => {
+            btn.disabled = false;
+          });
+        } catch (error) {
+          console.error("Failed to connect wallet:", error);
+          alert("Failed to connect wallet: " + error.message);
+        }
+      };
+    }
 
-        console.log("Connected:", accounts[0]);
-    };
-    </script>
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupEventListeners);
+    } else {
+      setupEventListeners();
+    }
+  </script>
 
 
 </body>

@@ -1,19 +1,43 @@
 async function getContract(write = false) {
+  // Check if ethers is available
+  if (typeof ethers === 'undefined') {
+    console.error('ethers library is not loaded. Please check the page source.');
+    alert("Error: ethers.js library failed to load. Please refresh the page.");
+    throw new Error("ethers library not available");
+  }
+
   if (!window.ethereum) {
-    alert("MetaMask not installed");
+    console.error("MetaMask not installed");
+    alert("MetaMask not installed. Please install the MetaMask extension.");
     return;
   }
 
-  const provider = new ethers.BrowserProvider(window.ethereum);
-  const signer = write ? await provider.getSigner() : provider;
+  try {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = write ? await provider.getSigner() : provider;
 
-  const abi = await fetch("abi/TradeDocuments.json").then(r => r.json());
+    const response = await fetch("abi/TradeDocuments.json");
+    if (!response.ok) {
+      throw new Error(`Failed to load ABI: ${response.status} ${response.statusText}`);
+    }
+    const abi = await response.json();
 
-  return new ethers.Contract(
-    CONTRACT_ADDRESS,
-    abi.abi,
-    signer
-  );
+    if (!CONTRACT_ADDRESS) {
+      console.error("CONTRACT_ADDRESS is not defined in constants.js");
+      alert("Error: Contract address not configured. Please check constants.js");
+      throw new Error("CONTRACT_ADDRESS not defined");
+    }
+
+    return new ethers.Contract(
+      CONTRACT_ADDRESS,
+      abi.abi,
+      signer
+    );
+  } catch (error) {
+    console.error("Error in getContract:", error);
+    alert("Failed to initialize contract: " + error.message);
+    throw error;
+  }
 }
 
 async function storeDocument(productId, docType, cid) {
