@@ -75,6 +75,7 @@
       font-weight: 600;
       border: none;
       cursor: pointer;
+      font-size: 0.8rem;
     }
 
     /* HERO */
@@ -129,7 +130,7 @@
   background: rgba(0, 255, 179, 0.062);
   color: #00ffb4;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 
 
