@@ -417,18 +417,49 @@
 
 
   <script>
-    document.getElementById("connectWalletBtn").onclick = async () => {
+    // Wait for ethers to load, then set up event listeners
+    function setupEventListeners() {
+      if (typeof ethers === 'undefined') {
+        console.log('Ethers not ready yet, retrying...');
+        setTimeout(setupEventListeners, 100);
+        return;
+      }
+      
+      const connectBtn = document.getElementById("connectWalletBtn");
+      if (!connectBtn) {
+        console.warn('Connect wallet button not found');
+        return;
+      }
+      
+      connectBtn.onclick = async () => {
         if (!window.ethereum) {
-        alert("Extension not installed");
+          alert("MetaMask extension not installed. Please install MetaMask to use this feature.");
           return;
         }
 
+        try {
           const accounts = await window.ethereum.request({
             method: "eth_requestAccounts"
           });
+          console.log("Connected wallet:", accounts[0]);
+          alert(`Connected: ${accounts[0]}`);
+          
+          // Enable create/upload buttons
+          document.querySelectorAll('.create-btn, .carbon-btn').forEach(btn => {
+            btn.disabled = false;
+          });
+        } catch (error) {
+          console.error("Failed to connect wallet:", error);
+          alert("Failed to connect wallet: " + error.message);
+        }
+      };
+    }
 
-        console.log("Connected:", accounts[0]);
-    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupEventListeners);
+    } else {
+      setupEventListeners();
+    }
   </script>
 
 
