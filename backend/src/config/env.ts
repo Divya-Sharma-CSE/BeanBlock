@@ -26,7 +26,7 @@ export const config = {
   mongoUri: process.env.MONGO_URI || "mongodb://localhost:27017/beanblock",
 
   // JWT Configuration
-  jwtSecret: process.env.JWT_SECRET || "your-super-secret-key-change-this",
+  jwtSecret: process.env.JWT_SECRET || "4973c8c334252ea69a4b",
   jwtExpiration: process.env.JWT_EXPIRATION || "7d",
 
   // Logging
