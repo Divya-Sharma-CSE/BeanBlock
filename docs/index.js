@@ -1,23 +1,33 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const btn = document.getElementById("connectWalletBtn");
 
-  btn.addEventListener("click", async () => {
-    if (!window.ethereum) {
-      alert("MetaMask not installed");
+  const connectButton = document.getElementById("connectWalletBtn");
+
+  async function connectMetaMask() {
+    // Check if MetaMask is installed
+    if (typeof window.ethereum === "undefined") {
+      alert("MetaMask is not installed. Please install MetaMask to continue.");
+      window.open("https://metamask.io/download/", "_blank");
       return;
     }
 
     try {
+      // Request wallet connection
       const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts"
+        method: "eth_requestAccounts",
       });
 
-      btn.textContent =
-        accounts[0].slice(0, 6) + "..." + accounts[0].slice(-4);
+      const walletAddress = accounts[0];
+      console.log("Connected wallet:", walletAddress);
 
-    } catch (err) {
-      console.error(err);
-      alert("User rejected connection");
+      // Optional UI update
+      connectButton.innerText =
+        walletAddress.slice(0, 6) + "..." + walletAddress.slice(-4);
+      connectButton.disabled = true;
+
+    } catch (error) {
+      console.error("User rejected connection", error);
+      alert("Connection request rejected.");
     }
-  });
-});
+  }
+
+  connectButton.addEventListener("click", connectMetaMask);
+
