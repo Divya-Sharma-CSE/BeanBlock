@@ -126,11 +126,10 @@
         .wallet-pill {
   padding: 10px 16px;
   border-radius: 999px;
-  background: rgba(0, 255, 180, 0.15);
+  background: rgba(0, 255, 179, 0.062);
   color: #00ffb4;
   font-weight: 600;
-  font-size: 2rem;
-  justify-self: center;
+  font-size: 1rem;
 }
 
 
