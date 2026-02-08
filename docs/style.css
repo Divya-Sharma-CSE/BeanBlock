@@ -129,7 +129,8 @@
   background: rgba(0, 255, 180, 0.15);
   color: #00ffb4;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 2rem;
+  justify-self: center;
 }
 
 
